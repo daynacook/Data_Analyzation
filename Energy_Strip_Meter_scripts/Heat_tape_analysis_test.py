@@ -3,11 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plot
 import xlrd
 
-# this is a test file that aims to understand python's ability to grab specific data in an excell sheet and display it 
-# in a neat fashion using graphing as well as understanding how to use python to grab data and manipulate it to do 
-# calculations
+'''this is a test file that aims to understand python's ability to grab specific data in an excell sheet and display it 
+in a neat fashion using graphing as well as understanding how to use python to grab data and manipulate it to do 
+calculations'''
 
 # path to location of Excel file to be read
+# Location depends on local machine
 excel_file = 'D:\Data analyzation folder\Excell_data_files\SBS W Heat tape 2020_LOG.xlsx'
 
 # df means Data Frame, which represents the frames (or cells) of data in an excell sheet
@@ -28,12 +29,13 @@ watData = df_read_file.loc[:, ['* Start', 'kWh/5min']]
 
 # Optional command that converts watData to datetime to change x axis to months in the year
 # instead of number of number of intervals
-#watData['* Start'] = pd.to_datetime(watData['* Start'], errors='coerce')
-#watData = watData.dropna(subset=['* Start'])
+# watData['* Start'] = pd.to_datetime(watData['* Start'], errors='coerce')
+# watData = watData.dropna(subset=['* Start'])
 
 # Configuring/formatting the kWh/5min graph
 watData.plot(xlabel = 'Time', ylabel = 'kWh/5min')
 # Setting the lower/upper bounds of the y axis
+## This is to make the graph easier to read and focus more on the average behavior
 plot.ylim(0, .4)
 # getting the lower/upper bounds of the x axis for use in formatting
 x_min, x_max = plot.xlim()
@@ -45,6 +47,12 @@ plot.savefig("Kwh_5min_heat_tape")
 print(watSumPrint)
 print(watSumTotal.loc['kWh/5min'])
 
+'''
+The following utilizes pandas ExcelWriter function to create a new excel file 
+using the xlsxwriter engine. It writes to the file in the specified sheet, in this case, 
+sheet 1, and then inserts the created graph png's into the excel sheet in the J column on row 17.
+The location of the new excel sheet is, by default, in the Users/User/ folder for Windows.
+'''
 #with pd.ExcelWriter("heat_tape_analysis.xlsx", engine="xlsxwriter") as writer:
 #    df_read_file.to_excel(writer, sheet_name="sheet 1")
 #    worksheet = writer.sheets['sheet 1']
